@@ -1,6 +1,6 @@
 import unittest
 
-from split_nodes import split_nodes_link
+from split_nodes import split_nodes_link, split_nodes_image
 from textnode import TextNode, TextType
 
 
@@ -8,16 +8,29 @@ class TestSplitNodesLink(unittest.TestCase):
     def test_not_list(self):
         with self.assertRaises(ValueError) as context:
             split_nodes_link("not a list")
-        self.assertEqual(str(context.exception), "The provided value is not a list.")
+        self.assertEqual(str(context.exception), "The provided input is not a list.")
 
-    def test_split_nodes_link_empty_list(self):
+    def test_empty_list(self):
         nodes = []
         new_nodes = split_nodes_link(nodes)
         self.assertEqual(len(new_nodes), 0)
 
-    def test_single_list_item(self):
+    def test_no_text(self):
+        nodes = [TextNode("", TextType.TEXT)]
+        with self.assertRaises(ValueError) as context:
+            split_nodes_link(nodes)
+        self.assertEqual(str(context.exception), "The provided node has no text.")
+
+    def test_no_links(self):
+        nodes = [TextNode("Just plain text", TextType.TEXT)]
+        new_nodes = split_nodes_link(nodes)
+        self.assertEqual(len(new_nodes), 1)
+        self.assertEqual(new_nodes[0].text, "Just plain text")
+        self.assertEqual(new_nodes[0].text_type, TextType.TEXT)
+    
+    def test_single_link(self):
         node = TextNode(
-            "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)",
+            "This is text with a link [to boot dev](https://www.boot.dev)",
             TextType.TEXT,
         )
         new_nodes = split_nodes_link([node])
@@ -26,21 +39,10 @@ class TestSplitNodesLink(unittest.TestCase):
             [
                 TextNode("This is text with a link ", TextType.TEXT),
                 TextNode("to boot dev", TextType.LINK, "https://www.boot.dev"),
-                TextNode(" and ", TextType.TEXT),
-                TextNode(
-                    "to youtube", TextType.LINK, "https://www.youtube.com/@bootdotdev"
-                ),
             ],
         )
 
-    def test_split_nodes_link_no_links(self):
-        nodes = [TextNode("Just plain text", TextType.TEXT)]
-        new_nodes = split_nodes_link(nodes)
-        self.assertEqual(len(new_nodes), 1)
-        self.assertEqual(new_nodes[0].text, "Just plain text")
-        self.assertEqual(new_nodes[0].text_type, TextType.TEXT)
-
-    def test_split_nodes_link_multiple_links(self):
+    def test_multiple_links(self):
         nodes = [
             TextNode(
                 "Click [here](https://boot.dev) or [there](https://youtube.com)",
@@ -60,7 +62,7 @@ class TestSplitNodesLink(unittest.TestCase):
         self.assertEqual(new_nodes[3].text_type, TextType.LINK)
         self.assertEqual(new_nodes[3].url, "https://youtube.com")
 
-    def test_split_nodes_link_consecutive(self):
+    def test_consecutive_links(self):
         nodes = [
             TextNode("[one](https://boot.dev)[two](https://youtube.com)", TextType.TEXT)
         ]
@@ -72,3 +74,25 @@ class TestSplitNodesLink(unittest.TestCase):
         self.assertEqual(new_nodes[1].text, "two")
         self.assertEqual(new_nodes[1].text_type, TextType.LINK)
         self.assertEqual(new_nodes[1].url, "https://youtube.com")
+
+
+
+
+
+
+
+
+
+
+class TestSplitNodesImage(unittest.TestCase):
+    def test_not_list(self):
+        with self.assertRaises(ValueError) as context:
+            split_nodes_link("not a list")
+        self.assertEqual(str(context.exception), "The provided input is not a list.")
+
+    def test_split_nodes_link_empty_list(self):
+        nodes = []
+        new_nodes = split_nodes_link(nodes)
+        self.assertEqual(len(new_nodes), 0)
+
+    
