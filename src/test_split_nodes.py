@@ -145,6 +145,19 @@ class TestSplitNodesImage(unittest.TestCase):
             ],
         )
 
+    def test_single_image_no_text(self):
+        node = TextNode(
+            "![img1](https://www.img1.com)",
+            TextType.TEXT,
+        )
+        new_nodes = split_nodes_image([node])
+        self.assertEqual(
+            new_nodes,
+            [
+                TextNode("img1", TextType.IMAGE, "https://www.img1.com"),
+            ],
+        )
+
     def test_multiple_images(self):
         nodes = [
             TextNode(
