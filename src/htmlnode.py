@@ -18,7 +18,10 @@ class HTMLNode:
         return f' {" ".join(props_list)}'
 
     def __repr__(self):
-        return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.attributes})"
+        value_repr = repr(self.value) if self.value is not None else None
+        children_repr = repr(self.children) if self.children is not None else None
+        attributes_repr = repr(self.attributes) if self.attributes is not None else None
+        return f"HTMLNode({self.tag}, {value_repr}, {children_repr}, {attributes_repr})"
 
 
 class LeafNode(HTMLNode):
@@ -35,10 +38,10 @@ class LeafNode(HTMLNode):
             return str(self.value)
         return f'<{self.tag}{self.attributes_to_html()}>{self.value}</{self.tag}>'
     
-    def __repr__(self):
-        if not self.tag:
-            return f'LeafNode({self.value})'
-        return f'LeafNode(<{self.tag}{self.attributes_to_html()}>{self.value}</{self.tag}>)'
+def __repr__(self):
+    if not self.tag:
+        return f'LeafNode({self.value})'
+    return f'LeafNode({self.tag}, {self.value})'
 
 
 class ParentNode(HTMLNode):
