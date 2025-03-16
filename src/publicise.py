@@ -17,15 +17,15 @@ def handle_files(src, dst):
 
 
 def publicise():
-    print("-----PUBLICISING-----")
+    print("-----COPYING STATIC TO PUBLIC-----")
     print("CHECKING\n./public exists... " + str(os.path.exists("./public")))
     if not os.path.exists("./public"):
         print("CREATING\n./public...")
         os.mkdir("./public")
     else:
-        print("DELETING\n./public...")
+        print("DELETING\n./public")
         shutil.rmtree("./public/")
-        print("CREATING\n./public...")
+        print("CREATING\n./public")
         os.mkdir("./public")
 
     handle_files(static, public)
