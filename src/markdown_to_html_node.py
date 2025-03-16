@@ -7,7 +7,6 @@ from textnode import text_node_to_html_node, TextNode, TextType
 
 def text_to_children(text):
     text_nodes = text_to_textnodes(text)
-    print(text_nodes)
 
     html_nodes = []
 
@@ -20,7 +19,7 @@ def text_to_children(text):
 
 def handle_block(block, block_type):
     if block_type == "PARAGRAPH":
-        children = text_to_children(block)
+        children = text_to_children(block.replace("\n", " "))
         return HTMLNode("p", None, children)
     elif block_type == "HEADING":
         heading_level = block.count("#")
@@ -36,64 +35,46 @@ def handle_block(block, block_type):
 
         return pre_node
     elif block_type == "QUOTE":
-        remove_delimiter = block.replace(">", "").strip()
-        children = text_to_children(remove_delimiter)
+        lines = block.splitlines()
+        processed_lines = []
+        for line in lines:
+            if line.startswith(">"):
+                processed_lines.append(line[1:].strip())
+            else:
+                processed_lines.append(line)
+        join_processed = "\n".join(processed_lines)
+        children = text_to_children(join_processed)
         quote_node = HTMLNode("blockquote", None, children, None)
         
         return quote_node
     elif block_type == "UNORDERED_LIST":
-        # Split the block into lines
-        # For each line, remove the "- " or "* " at the beginning
-        # Process each line for inline formatting
-        # Create an HTMLNode with tag "li" for each processed line
-        # Collect all "li" nodes and make them children of an HTMLNode with tag "ul"
-        pass
+        lines = block.splitlines()
+        processed_lines = []
+
+        for line in lines:
+            if line.startswith("- ") or line.startswith("* "):
+                processed_lines.append(line[2:].strip())
+            else:
+                processed_lines.append(line)
+
+        processed_lines = list(map(lambda x: HTMLNode("li", None, text_to_children(x)), processed_lines))
+        ul_node = HTMLNode("ul", None, processed_lines, None)
+
+        return ul_node
     elif block_type == "ORDERED_LIST":
-        # Similar to unordered lists, but remove the "1. ", "2. ", etc. at the beginning
-        # Create an HTMLNode with tag "ol" instead of "ul"
-        pass
+        lines = block.splitlines()
+        processed_lines = []
+        
+        for line in lines:
+            if line[0].isdigit() and line[1] == "." and line[2] == " ":
+                processed_lines.append(line[3:].strip())
+            else:
+                processed_lines.append(line)
 
+        processed_lines = list(map(lambda x: HTMLNode("li", None, text_to_children(x)), processed_lines))
+        ol_node = HTMLNode("ol", None, processed_lines, None)
 
-paragraph_test_input = """
-This is **bolded** paragraph
-text in a p
-tag here
-
-This is another paragraph with *italic* text and `code` here
-
-"""
-
-heading_test_input = """
-# Heading 1
-
-## Heading 2
-
-### Heading 3
-
-#### Heading 4
-
-##### Heading 5
-
-###### Heading 6
-"""
-
-code_test_input = """
-```
-def hello_world():
-    print("Hello, world!")
-    
-# This is a comment
-for i in range(5):
-    print(i)
-```
-"""
-
-quote_test_input = """
-> This is a quote
-> with **multiple** lines
-> 
-> And a blank line in between
-"""
+        return ol_node
 
 def markdown_to_html_node(md):
     blocks = markdown_to_blocks(md)
@@ -106,10 +87,3 @@ def markdown_to_html_node(md):
         children.append(html_node)
 
     return HTMLNode("div", None, children)
-
-
-# needs to return:
-# "<div><p>This is <b>bolded</b> paragraph text in a p tag here</p><p>This is another paragraph with <i>italic</i> text and <code>code</code> here</p></div>"
-
-if __name__ == "__main__":
-    print("FINAL:", markdown_to_html_node(quote_test_input))
