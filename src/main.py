@@ -1,5 +1,7 @@
+from publicise import publicise
+
 def main():
-    pass
+    publicise()
 
 if __name__ == "__main__":
     main()
