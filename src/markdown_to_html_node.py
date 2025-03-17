@@ -44,7 +44,16 @@ def handle_block(block, block_type):
             else:
                 processed_lines.append(line)
 
-        processed_lines = list(map(lambda x: ParentNode("p", text_to_children(x)) if x else LeafNode("p", '&nbsp;'), processed_lines))
+        processed_lines = list(
+            map(
+                lambda x: (
+                    ParentNode("p", text_to_children(x))
+                    if x
+                    else LeafNode("p", "&nbsp;")
+                ),
+                processed_lines,
+            )
+        )
         quote_node = ParentNode("blockquote", processed_lines)
         return quote_node
 
@@ -88,17 +97,3 @@ def markdown_to_html_node(md):
         children.append(html_node)
 
     return ParentNode("div", children)
-
-
-if __name__ == "__main__":
-    # TODO: DEBUG WHY BLOCKQUOTE/QUOTE ISN'T BEING FORMATTED INTO HTMLNode (parentnode) CORRECTLY
-    md = """
-# This is a heading
-
-> This is a blockquote
->
-> -- by Me
-
-other stuff
-"""
-    print("FINAL", markdown_to_html_node(md))

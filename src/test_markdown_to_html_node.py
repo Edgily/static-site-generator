@@ -87,7 +87,6 @@ for i in range(5):
         self.assertEqual(result.children[0].tag, "blockquote")
         self.assertEqual(result.children[0].children[0].tag, "p")
 
-
     def test_unordered_list_to_html_node(self):
         unorderedlist_test_input = """
 * Item 1
@@ -106,7 +105,6 @@ for i in range(5):
         self.assertEqual(li_tags[1].tag, "li")
         self.assertEqual(li_tags[2].tag, "li")
 
-    
     def test_ordered_list_to_html_node(self):
         orderedlist_test_input = """
 1. First item
@@ -125,7 +123,6 @@ for i in range(5):
         self.assertEqual(li_tags[1].tag, "li")
         self.assertEqual(li_tags[2].tag, "li")
 
-
     def test_empty_markdown_input(self):
         empty_input = ""
         result = markdown_to_html_node(empty_input)
@@ -133,7 +130,6 @@ for i in range(5):
         self.assertEqual(result.tag, "div")
         self.assertEqual(len(result.children), 0)
 
-    
     def test_heading_and_paragraph_to_html_node(self):
         heading_and_paragraph_test_input = """
 # Heading 1

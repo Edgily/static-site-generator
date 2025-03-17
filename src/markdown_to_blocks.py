@@ -10,5 +10,5 @@ def markdown_to_blocks(markdown):
     for i in split_on_two_empty_lines:
         if i != "":
             non_empty_lines.append(i)
-    
+
     return non_empty_lines

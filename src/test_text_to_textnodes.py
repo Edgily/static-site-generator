@@ -72,7 +72,3 @@ class TestTextToTextNodes(unittest.TestCase):
         result = text_to_textnodes(input_text)
 
         self.assertEqual(result, [])
-
-
-if __name__ == "__main__":
-    unittest.main()

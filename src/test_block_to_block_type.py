@@ -9,9 +9,7 @@ class TestBlockToBlockType(unittest.TestCase):
         )
 
     def test_heading(self):
-        self.assertEqual(
-            block_to_block_type("# heading block"), BlockType.HEADING
-            )
+        self.assertEqual(block_to_block_type("# heading block"), BlockType.HEADING)
 
     def test_code(self):
         self.assertEqual(
@@ -41,7 +39,3 @@ class TestBlockToBlockType(unittest.TestCase):
             self.assertEqual(
                 str(block_to_block_type("string")), "Block must be a string value"
             )
-
-
-if __name__ == "__main__":
-    unittest.main()

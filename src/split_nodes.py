@@ -27,7 +27,7 @@ def split_nodes_link(nodes):
         raise ValueError("The provided input is not a list.")
 
     new_nodes = []
-    
+
     for node in nodes:
         if node.text_type != TextType.TEXT:
             new_nodes.append(node)
@@ -38,7 +38,9 @@ def split_nodes_link(nodes):
             new_nodes.extend(result_nodes)
     return new_nodes
 
+
 # LINKS above IMAGES below
+
 
 def split_text_image(text):
     extracted_images = extract_markdown_images(text)
@@ -58,6 +60,7 @@ def split_text_image(text):
     result.extend(split_text_image(parts[1]))
 
     return result
+
 
 def split_nodes_image(nodes):
     if not isinstance(nodes, list):

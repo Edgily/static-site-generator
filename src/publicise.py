@@ -3,6 +3,7 @@ import os, shutil
 static = "./static"
 public = "./public"
 
+
 def handle_files(src, dst):
     for item in os.listdir(src):
         item_path = os.path.join(src, item)
@@ -31,7 +32,5 @@ def publicise():
     handle_files(static, public)
 
 
-
 if __name__ == "__main__":
     publicise()
-

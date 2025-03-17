@@ -27,6 +27,7 @@ class TestHTMLNode(unittest.TestCase):
         test_output = ""
         self.assertEqual(test_input, test_output)
 
+
 class TestLeafNode(unittest.TestCase):
     def test_to_html_with_href(self):
         node = LeafNode("a", "Click here", {"href": "https://example.com"})
@@ -35,15 +36,21 @@ class TestLeafNode(unittest.TestCase):
         self.assertEqual(test_input, test_output)
 
     def test_to_html_with_multiple_attributes(self):
-        node = LeafNode("a", "Click here", {"href": "someurl.url", "target": "_blank", "other_prop": "whoops"})
+        node = LeafNode(
+            "a",
+            "Click here",
+            {"href": "someurl.url", "target": "_blank", "other_prop": "whoops"},
+        )
         test_input = node.to_html()
-        test_output = '<a href="someurl.url" target="_blank" other_prop="whoops">Click here</a>'
+        test_output = (
+            '<a href="someurl.url" target="_blank" other_prop="whoops">Click here</a>'
+        )
         self.assertEqual(test_input, test_output)
 
     def test_to_html_without_attributes(self):
         node = LeafNode("a", "Click here")
         test_input = node.to_html()
-        test_output = '<a>Click here</a>'
+        test_output = "<a>Click here</a>"
         self.assertEqual(test_input, test_output)
 
     def test_to_html_with_no_value_raises_error(self):
@@ -82,7 +89,7 @@ class TestParentNode(unittest.TestCase):
     def test_parent_node_must_have_children(self):
         node = ParentNode(
             "p",
-            [] ,
+            [],
         )
         with self.assertRaises(ValueError) as context:
             node.to_html()
@@ -122,11 +129,9 @@ class TestParentNode(unittest.TestCase):
                 ),
             ],
         )
-        
+
         test_input = node.to_html()
-        test_output = "<div><section><article><p>Deeply nested</p></article></section></div>"
+        test_output = (
+            "<div><section><article><p>Deeply nested</p></article></section></div>"
+        )
         self.assertEqual(test_input, test_output)
-
-
-if __name__ == "__main__":
-    unittest.main()

@@ -1,6 +1,7 @@
 import unittest
 from extract_title import extract_title
 
+
 class TestExtractTitle(unittest.TestCase):
     def test_extract_title(self):
         input = "# Heading\n\nThis is a paragraph."
@@ -10,6 +11,6 @@ class TestExtractTitle(unittest.TestCase):
         with self.assertRaises(ValueError):
             extract_title("This is a paragraph without a heading")
 
+
 if __name__ == "__main__":
     unittest.main()
-

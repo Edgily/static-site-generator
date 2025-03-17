@@ -127,40 +127,47 @@ class TestTextNodeToHtmlNode(unittest.TestCase):
         self.assertEqual(html_node.value, "")
 
     def test_link_with_valid_text_and_url(self):
-        text_node = TextNode('link.com', TextType.LINK, 'https://link.com/%%jflkajsdflkj??9fjasldkfjyes==')
+        text_node = TextNode(
+            "link.com",
+            TextType.LINK,
+            "https://link.com/%%jflkajsdflkj??9fjasldkfjyes==",
+        )
         html_node = text_node_to_html_node(text_node)
 
         self.assertIsInstance(html_node, LeafNode)
         self.assertEqual(html_node.tag, "a")
-        assert html_node.attributes.get("href") == "https://link.com/%%jflkajsdflkj??9fjasldkfjyes=="
+        assert (
+            html_node.attributes.get("href")
+            == "https://link.com/%%jflkajsdflkj??9fjasldkfjyes=="
+        )
         self.assertEqual(html_node.value, "link.com")
-    
+
     def test_link_without_text_raises_value_error(self):
         with self.assertRaisesRegex(ValueError, "Link must have text"):
-            text_node = TextNode('', TextType.LINK, 'https://link.com')
+            text_node = TextNode("", TextType.LINK, "https://link.com")
             html_node = text_node_to_html_node(text_node)
-    
+
     def test_link_without_url_raises_value_error(self):
         with self.assertRaisesRegex(ValueError, "Link must have URL"):
-            text_node = TextNode('Link<><><**FJLSADKFJ text', TextType.LINK, '')
+            text_node = TextNode("Link<><><**FJLSADKFJ text", TextType.LINK, "")
             html_node = text_node_to_html_node(text_node)
 
     def test_image_node_with_valid_alt_text_and_url_results_in_img(self):
-        text_node = TextNode('image alt', TextType.IMAGE, 'https://linktoimage.com/??flkajsdlfk==%%yes')
+        text_node = TextNode(
+            "image alt", TextType.IMAGE, "https://linktoimage.com/??flkajsdlfk==%%yes"
+        )
         html_node = text_node_to_html_node(text_node)
 
         self.assertIsInstance(html_node, LeafNode)
         self.assertEqual(html_node.tag, "img")
-        assert html_node.attributes.get("src") == "https://linktoimage.com/??flkajsdlfk==%%yes"
+        assert (
+            html_node.attributes.get("src")
+            == "https://linktoimage.com/??flkajsdlfk==%%yes"
+        )
         assert html_node.attributes.get("alt") == "image alt"
         self.assertEqual(html_node.value, "")
-    
+
     def test_image_node_without_url_raises_value_error(self):
         with self.assertRaisesRegex(ValueError, "Image must have URL"):
-            text_node = TextNode('alt text', TextType.IMAGE, '')
+            text_node = TextNode("alt text", TextType.IMAGE, "")
             html_node = text_node_to_html_node(text_node)
-
-
-if __name__ == "__main__":
-    unittest.main()
-

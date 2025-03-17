@@ -26,22 +26,22 @@ class HTMLNode:
 
 class LeafNode(HTMLNode):
     def __init__(self, tag, value, attributes=None):
-        if attributes is None:  
+        if attributes is None:
             attributes = {}
         super().__init__(tag, value, None, attributes)
-        
+
     def to_html(self):
         # Ensure no children
         if self.value is None:
             raise ValueError("LeafNode must have a value")
         if not self.tag:
             return str(self.value)
-        return f'<{self.tag}{self.attributes_to_html()}>{self.value}</{self.tag}>'
-    
+        return f"<{self.tag}{self.attributes_to_html()}>{self.value}</{self.tag}>"
+
     def __repr__(self):
         if not self.tag:
-            return f'LeafNode({self.value})'
-        return f'LeafNode({self.tag}, {self.value})'
+            return f"LeafNode({self.value})"
+        return f"LeafNode({self.tag}, {self.value})"
 
 
 class ParentNode(HTMLNode):
@@ -53,8 +53,8 @@ class ParentNode(HTMLNode):
             raise ValueError("ParentNode must have a tag")
         if not self.children:
             raise ValueError("ParentNode must have children")
-        
-        html = f'<{self.tag}'
+
+        html = f"<{self.tag}"
 
         html += self.attributes_to_html() + ">"
 
@@ -62,9 +62,9 @@ class ParentNode(HTMLNode):
         for child in self.children:
             html += child.to_html()
 
-        html += f'</{self.tag}>'
+        html += f"</{self.tag}>"
 
         return html
 
     def __repr__(self):
-        return f'ParentNode({self.tag}, {self.children}, {self.attributes})'
+        return f"ParentNode({self.tag}, {self.children}, {self.attributes})"
