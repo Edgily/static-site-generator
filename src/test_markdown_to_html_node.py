@@ -74,10 +74,9 @@ for i in range(5):
 
     def test_quote_to_html_node(self):
         quote_test_input = """
-> This is a quote
-> with **multiple** lines
-> 
-> And a blank line in between
+> I am in fact a Hobbit in all but size.
+>
+> -- J.R.R. Tolkien
 """
         result = markdown_to_html_node(quote_test_input)
         self.assertIsInstance(result, ParentNode)
@@ -85,7 +84,9 @@ for i in range(5):
         self.assertEqual(len(result.children), 1)
         self.assertIsInstance(result.children[0], ParentNode)
         self.assertEqual(result.children[0].tag, "blockquote")
-        self.assertEqual(result.children[0].children[0].tag, "p")
+        self.assertEqual(len(result.children[0].children), 1)
+        self.assertIsInstance(result.children[0].children[0], LeafNode)
+        self.assertEqual(result.children[0].children[0].value, "I am in fact a Hobbit in all but size.<br />-- J.R.R. Tolkien")
 
     def test_unordered_list_to_html_node(self):
         unorderedlist_test_input = """

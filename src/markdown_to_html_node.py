@@ -43,18 +43,8 @@ def handle_block(block, block_type):
                 processed_lines.append(line[2:].strip())
             else:
                 processed_lines.append(line)
-
-        processed_lines = list(
-            map(
-                lambda x: (
-                    ParentNode("p", text_to_children(x))
-                    if x
-                    else LeafNode("p", "&nbsp;")
-                ),
-                processed_lines,
-            )
-        )
-        quote_node = ParentNode("blockquote", processed_lines)
+        joined_lines = '<br />'.join(processed_lines[:-1]) + processed_lines[-1]
+        quote_node = ParentNode("blockquote", text_to_children(joined_lines))
         return quote_node
 
     elif block_type == "UNORDERED_LIST":
