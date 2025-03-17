@@ -38,10 +38,10 @@ class LeafNode(HTMLNode):
             return str(self.value)
         return f'<{self.tag}{self.attributes_to_html()}>{self.value}</{self.tag}>'
     
-def __repr__(self):
-    if not self.tag:
-        return f'LeafNode({self.value})'
-    return f'LeafNode({self.tag}, {self.value})'
+    def __repr__(self):
+        if not self.tag:
+            return f'LeafNode({self.value})'
+        return f'LeafNode({self.tag}, {self.value})'
 
 
 class ParentNode(HTMLNode):
@@ -67,4 +67,4 @@ class ParentNode(HTMLNode):
         return html
 
     def __repr__(self):
-        return f'ParentNode({self.tag}, {self.children}, {self.attributes})'    
+        return f'ParentNode({self.tag}, {self.children}, {self.attributes})'
